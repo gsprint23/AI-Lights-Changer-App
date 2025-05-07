@@ -1,5 +1,4 @@
-pytz
-requests
 openai
 paho-mqtt
+streamlit
 streamlit-authenticator
