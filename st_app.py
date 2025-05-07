@@ -1,5 +1,17 @@
 """st_app.py
-Streamlit app for the AI Lights Changer!
+The AI Lights Changer App! Use AI to describe how you want the sign to light up
+and it'll use AI to parse executable code that is sent to the sign to light it up.
+
+To make this all work, this app uses:
+-Streamlit for the web framework and cloud deployment: https://streamlit.io/
+-Streamlit Authenticator for authentication: https://github.com/mkhorasani/Streamlit-Authenticator
+-OpenAI API for LLM access: https://platform.openai.com/docs/overview
+-Paho MQTT client library for connecting to MQTT pub/sub broker: https://pypi.org/project/paho-mqtt/
+-EMQX for the MQTT pub/sub broker: https://www.emqx.com/en
+
+Note: the lights in the sign are controlled by an ESP32 running CircuitPlayground and the
+Adafruit MiniMQTT client library for connecting to MQTT pub/sub broker: https://docs.circuitpython.org/projects/minimqtt/en/stable/api.html
+
 
 @author Gina Sprint
 @date 5/6/25
@@ -103,7 +115,7 @@ def safe_eval_lighting_config(code_str):
     try:
         obj = ast.literal_eval(code_str)
     except (ValueError, SyntaxError):
-        return "Error: Could not safely evaluate string."
+        return "Error: Code in the response is not deemed safe enough to execute."
 
     if is_static_config(obj):
         return "Configuration: Static\n" + repr(obj)
@@ -166,6 +178,8 @@ else:
         1 # cookie expiry days
     )
 
+st.title("AI Lights Changer")
+
 # Creating a login widget
 try:
     authenticator.login()
@@ -175,7 +189,6 @@ except LoginError as e:
 if st.session_state["authentication_status"]:
     authenticator.logout()
     st.write(f'Welcome *{st.session_state["name"]}*')
-    st.title("Sign Lights Changer")
     with st.form("my_form"):
         user_description = st.text_input("Lights Description", "")
         # Every form must have a submit button.
@@ -199,7 +212,7 @@ if st.session_state["authentication_status"]:
             config, code = clean_content(content)
             result = safe_eval_lighting_config(code)
             if "error" not in result.lower():
-                st.write("No errors detecting. Sending message to lighted sign!!")
+                st.write("No errors detected. Sending message to lighted sign!!")
                 cleaned_content = config + "\n" + code
                 mqtt_setup_and_publish(cleaned_content)
             else:
