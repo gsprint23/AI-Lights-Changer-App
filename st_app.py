@@ -129,7 +129,7 @@ prompt = \
 Parse their description into lists of (R, G, B) tuples using one of two configurations: static or dynamic.
 Static is simply a Python list of 19 (R, G, B) tuples: [(255, 0, 0), (0, 255, 0), ...]
 Dynamic is a Python list of dictionaries where each dictionary represents lights to show for a time delay in seconds: [{"lights": <list of 19 (R, G, B) tuples, "delay": <number of seconds to show the lights for}, ...]
-Only use the Dynamic configuration if there is more than one list of 19 (R, G, B) tuples.
+Only use the Dynamic configuration if there is more than one list of 19 (R, G, B) tuples. Don't use any functions or operators in your code.
 
 Example 1
 Description: Turn the lights on so they look like a rainbow.
