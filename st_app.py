@@ -1,6 +1,6 @@
 """st_app.py
-The AI Lights Changer App! Use AI to describe how you want the sign to light up
-and it'll use AI to parse executable code that is sent to the sign to light it up.
+Describe how you want to light the sign up and the app will use AI to parse
+executable code from your prompt that is sent to the sign to light it up. 
 
 To make this all work, this app uses:
 -Streamlit for the web framework and cloud deployment: https://streamlit.io/
