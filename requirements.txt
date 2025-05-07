@@ -1,0 +1,5 @@
+pytz
+requests
+openai
+paho-mqtt
+streamlit-authenticator
